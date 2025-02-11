@@ -1,28 +1,15 @@
-import React, { Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
-import {routes} from './router'
-
+import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { AppRouter } from './router/AppRouter'
 
 export const AIChatApp = () => {
   return (
-    <Suspense fallback={
-      <div> 
-        <h1>Cargando...</h1>
-      </div>
-    }>
+    <>
     
-        <Routes>
-
-          {
-            routes.map(({path, component: Component}) => (
-
-              <Route key={path} path={path} element={<Component/>}/>
-
-            ))
-          }
-
-        </Routes>
-
-    </Suspense>
+        <BrowserRouter>
+          <AppRouter/>
+        </BrowserRouter>
+    
+    </>
   )
 }

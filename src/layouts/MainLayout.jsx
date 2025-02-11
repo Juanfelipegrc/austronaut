@@ -1,12 +1,17 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import { SideBar } from '../components/SideBar'
+import { ToggleThemeButton } from '../components'
 
-const MainLayout = () => {
+export const MainLayout = () => {
   return (
-    <div>
+    <div className='flex overflow-hidden h-svh w-full'>
 
+        <ToggleThemeButton/>
 
-        <main>
+        <SideBar/>
+
+        <main className='w-full'>
 
             <Outlet/>
 
@@ -16,5 +21,3 @@ const MainLayout = () => {
     </div>
   )
 }
-
-export default MainLayout;

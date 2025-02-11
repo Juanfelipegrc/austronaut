@@ -1,13 +1,12 @@
 import React from 'react'
 
-const AuthPage = () => {
+export const AuthPage = () => {
   return (
     <>
     
+      <h1 className='text-2xl'>Auth</h1>
         
     
     </>
   )
 }
-
-export default AuthPage;
