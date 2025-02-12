@@ -26,7 +26,7 @@ export const ToggleThemeButton = () => {
 
   return (
     <>
-    
+          
          <label className="fixed right-3 top-3 inline-flex items-center cursor-pointer">
             <input type="checkbox" checked={darkMode} onChange={() => onSetDarkMode(!darkMode)} className="sr-only peer" />
             <div className={`w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full 

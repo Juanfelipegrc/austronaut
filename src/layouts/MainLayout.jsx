@@ -4,6 +4,10 @@ import { SideBar } from '../components/SideBar'
 import { ToggleThemeButton } from '../components'
 
 export const MainLayout = () => {
+
+
+  
+
   return (
     <div className='flex overflow-hidden h-svh w-full'>
 

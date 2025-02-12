@@ -8,6 +8,7 @@ export const authSlice = createSlice({
         displayName: '',
         email: '',
         uid: '',
+        error: '',
         darkMode: typeof window !== undefined && localStorage.getItem('theme') === 'dark',
     },
     reducers: {
@@ -26,14 +27,18 @@ export const authSlice = createSlice({
         },
 
         chenckingCredentials: (state) => {
-            state.status = 'checking'
+            state.status = 'checking';
         },
 
         setDarkMode: (state, {payload}) => {
-            state.darkMode = payload
+            state.darkMode = payload;
         },
+
+        setError: (state, {payload}) => {
+            state.error = payload;
+        }
     }
 });
 
 
-export const { login, logout, chenckingCredentials, setDarkMode } = authSlice.actions;
+export const { login, logout, chenckingCredentials, setDarkMode, setError } = authSlice.actions;

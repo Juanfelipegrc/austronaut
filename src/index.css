@@ -10,3 +10,9 @@
 .bm-burger-button{
     display: none !important;
 }
+
+.bm-menu, .bm-item {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
