@@ -60,7 +60,7 @@ export const Auth = ({onSetExpanded}) => {
                         value={formikLogin.values.email}
                         onChange={formikLogin.handleChange}
                         onBlur={formikLogin.handleBlur}
-                        className='rounded-2xl bg-white w-full shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] px-3 py-3 focus-visible:outline-0' 
+                        className='rounded-2xl bg-[#F4F6F8] lg:bg-white w-full shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] px-3 py-3 focus-visible:outline-0' 
                     />
                     {
                         (formikLogin.touched.email && formikLogin.errors.email 
@@ -81,7 +81,7 @@ export const Auth = ({onSetExpanded}) => {
                         value={formikLogin.values.password}
                         onBlur={formikLogin.handleBlur}
                         onChange={formikLogin.handleChange}
-                        className='rounded-2xl w-full bg-white shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] px-3 py-3 focus-visible:outline-0' 
+                        className='rounded-2xl w-full bg-[#F4F6F8] lg:bg-white shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] px-3 py-3 focus-visible:outline-0' 
                     />
 
                     {
