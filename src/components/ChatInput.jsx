@@ -9,7 +9,7 @@ export const ChatInput = () => {
                 <input 
                     type="text"
                     placeholder='Message Austronaut'
-                    className='h-24 w-full shadow-sm shadow-black/25 dark:shadow-sm dark:shadow-white/25 bg-gray-50 dark:bg-[#F4F6F8] rounded-3xl px-4  placeholder-gray-600 focus-visible:outline-0 pb-[1.90rem]' 
+                    className='h-24 w-full shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] bg-gray-100 dark:bg-[#F4F6F8] rounded-3xl px-4 placeholder-gray-600 focus-visible:outline-0 pb-[1.90rem]' 
                 />
                 <button className='rounded-full w-9 h-9 flex items-center justify-center absolute right-3 bottom-4 bg-black dark:bg-[#121417] cursor-pointer'>
                 
