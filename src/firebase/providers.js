@@ -72,13 +72,16 @@ export const signInWithGoogle = async() => {
     try {
         const res = await signInWithPopup(FirebaseAuth, googleProvider);
 
-        const {displayName, email, uid} = res.user;
+        const {displayName, email, uid, photoURL} = res.user;
+
+        
 
         return {
             ok: true,
             displayName,
             email,
             uid,
+            photoURL
         }
     } catch (error) {
         console.error(error);

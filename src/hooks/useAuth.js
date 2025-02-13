@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { chenckingCredentials, login, logout, setDarkMode, setError } from "../store";
 import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from "../firebase/providers";
-import {doc, setDoc} from 'firebase/firestore';
+import {doc, getDoc, setDoc} from 'firebase/firestore';
 import { FirebaseDB } from "../firebase/config";
 import { useEffect } from "react";
+import { color } from "framer-motion";
 
 
 
@@ -11,6 +12,13 @@ export const useAuth = () => {
     
     const authState = useSelector(state => state.auth);
     const dispatch = useDispatch();
+
+    const darkColorsToPhotoURL = [
+        "#2C3E50",
+        "#34495E",
+        "#3D3D3D",
+        "#212121",
+      ];
 
     
     
@@ -77,20 +85,44 @@ export const useAuth = () => {
         dispatch(chenckingCredentials());
         const res = await signInWithGoogle();
 
-        const {displayName, email, uid} = res;
+        const {displayName, email, uid, photoURL} = res;
+
+        let photoURLColor = null ;
 
         if(!res.ok) {
             dispatch(setError(res.msg));
             return;
         };
 
+        const userRef = doc(FirebaseDB, 'users', uid);
+
+        const userSnap = await getDoc(userRef);
+
+        if(userSnap.exists()) {
+            if(!userSnap.data().photoURLcolor){
+
+                photoURLColor = darkColorsToPhotoURL[Math.floor(Math.random() * darkColorsToPhotoURL.length)];
+                 
+            } 
+            else {
+                photoURLColor = userSnap.data().photoURLcolor;
+            };
+        } else {
+            photoURLColor = darkColorsToPhotoURL[Math.floor(Math.random() * darkColorsToPhotoURL.length)];
+        }
+
+
+
+
         const user = {
             displayName,
             email,
             uid,
+            photoURL: photoURL,
+            noPhotoURLColor: photoURLColor,
         }
 
-        const userRef = doc(FirebaseDB, 'users', uid);
+        
 
         await setDoc(userRef, user);
 
@@ -99,6 +131,7 @@ export const useAuth = () => {
         dispatch(login(user));
 
     };
+
 
 
     // ON SET DARK MODE

@@ -8,6 +8,8 @@ export const authSlice = createSlice({
         displayName: '',
         email: '',
         uid: '',
+        photoURL: '',
+        noPhotoURLColor: '',
         error: '',
         darkMode: typeof window !== undefined && localStorage.getItem('theme') === 'dark',
     },
@@ -17,6 +19,8 @@ export const authSlice = createSlice({
             state.displayName = payload.displayName;
             state.email = payload.email;
             state.uid = payload.uid;
+            state.photoURL = payload.photoURL;
+            state.noPhotoURLColor = payload.noPhotoURLColor
         },
 
         logout: (state) => {
@@ -24,6 +28,8 @@ export const authSlice = createSlice({
             state.displayName = '';
             state.email = '';
             state.uid = '';
+            state.photoURL = '';
+            state.noPhotoURLColor = '';
         },
 
         chenckingCredentials: (state) => {
