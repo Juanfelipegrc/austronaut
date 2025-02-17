@@ -10,7 +10,6 @@ export const createAnswer = async(message) => {
             content: message
         }],
         temperature: 0.4,
-        max_tokens: 900,
         top_p: 1
     };
 

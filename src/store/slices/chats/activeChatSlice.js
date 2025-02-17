@@ -6,14 +6,18 @@ export const activeChatSlice = createSlice({
     initialState: {
         title: '',
         messages: [],
+        loadingResponse: false,
     },
     reducers: {
         setActiveChat: (state, {payload}) =>{
             state.title = payload.title;
             state.messages = payload.messages;
         },
+        setLoadingResponse: (state, {payload}) => {
+            state.loadingResponse = payload;
+        }
     }
 });
 
 
-export const { setActiveChat } = activeChatSlice.actions;
+export const { setActiveChat, setLoadingResponse } = activeChatSlice.actions;

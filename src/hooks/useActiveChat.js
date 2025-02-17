@@ -3,7 +3,7 @@ import {addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query} fr
 import { FirebaseDB } from "../firebase/config";
 import { useAuth } from "./useAuth";
 import { createAnswer } from "../helpers";
-import { setActiveChat } from "../store";
+import { setActiveChat, setLoadingResponse } from "../store";
 
 
 export const useActiveChat = () => {
@@ -15,6 +15,8 @@ export const useActiveChat = () => {
 
 
     const onSetActiveChat = async(chat) => {
+
+        dispatch(setLoadingResponse(true));
 
         let newChat = null;
         if(!chat.title && chat.messages?.length === 0){
@@ -30,6 +32,8 @@ export const useActiveChat = () => {
         dispatch(setActiveChat({title: newChat.title, messages: newChat.messages}));
 
         localStorage.setItem('activeChat', JSON.stringify(newChat));
+
+        dispatch(setLoadingResponse(false));
 
     } 
 
