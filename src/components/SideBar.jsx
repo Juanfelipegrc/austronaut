@@ -3,6 +3,8 @@ import {slide as Menu} from 'react-burger-menu'
 import { PrincipalLogoDark, PrincipalLogoLight } from '../assets';
 import { useAuth } from '../hooks';
 import { LoginRegisterButton } from './LoginRegisterButton';
+import { NewChatButton } from './NewChatButton';
+import { ChatsBox } from './ChatsBox';
 
 export const SideBar = () => {
 
@@ -72,10 +74,17 @@ export const SideBar = () => {
                   <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
               </svg>
 
-              <div className='w-full flex flex-col items-center'>
+              <div className='w-full h-full flex flex-col items-center'>
+              {/* HEADER */}
                 <img className='w-[6rem] h-[6rem] mt-4' src={darkMode? PrincipalLogoDark : PrincipalLogoLight} alt="austronaut-logo" />
 
-                <h1 className='text-center text-[1.2rem] mt-5 font-orbitron font-bold text-[#333333] dark:text-[#EDEDED]'>AUSTRONAUT</h1>
+                <h1 className='text-center mb-7 text-[1.2rem] mt-5 font-orbitron font-bold text-[#333333] dark:text-[#EDEDED]'>AUSTRONAUT</h1>
+              {/* HEADER */}
+
+                <NewChatButton/>
+
+                <ChatsBox/>
+
 
                 <LoginRegisterButton/>
               </div>
@@ -87,10 +96,18 @@ export const SideBar = () => {
           <>
 
             <div className='w-[18rem] relative bg-[#F4F6F8] transition-all dark:bg-[#1E1F26] h-full flex flex-col items-center'>
-                  
+
+            {/* HEADER */}
               <img className='w-16 h-16 mt-4' src={darkMode? PrincipalLogoDark : PrincipalLogoLight} alt="austronaut-logo" />
 
-              <h1 className='text-center text-xl mt-3 font-orbitron font-bold text-[#333333] dark:text-[#EDEDED]'>AUSTRONAUT</h1>
+              <h1 className='text-center text-xl mt-3 mb-11 font-orbitron font-bold text-[#333333] dark:text-[#EDEDED]'>AUSTRONAUT</h1>
+            {/* HEADER */}
+
+              <NewChatButton/>
+
+              <ChatsBox/>
+
+
 
               <LoginRegisterButton/>              
 

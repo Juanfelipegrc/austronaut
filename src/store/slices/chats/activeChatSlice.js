@@ -6,15 +6,11 @@ export const activeChatSlice = createSlice({
     initialState: {
         title: '',
         messages: [],
-        deepThink: false,
-        search: false
     },
     reducers: {
         setActiveChat: (state, {payload}) =>{
             state.title = payload.title;
             state.messages = payload.messages;
-            state.deepThink = payload.deepThink;
-            state.search = payload.search;
         },
     }
 });

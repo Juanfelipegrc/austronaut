@@ -1,22 +1,67 @@
-import React from 'react'
-import { useAuth } from '../hooks'
+import React, { useRef } from 'react'
+import { useActiveChat, useAuth } from '../hooks'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export const ChatInput = () => {
 
 
+
     const {darkMode} = useAuth();
+    const {onSetActiveChat, title, messages} = useActiveChat();
+    const textareaRef = useRef();
+
+    const formik = useFormik({
+        initialValues: {message: ''},
+        validationSchema: Yup.object({
+            message: Yup.string()
+                    .min(6, 'Message must be at least 1 character'),
+        }),
+        onSubmit: async(values) => {
+            await onSetActiveChat({
+                title: title,
+                messages: messages,
+                newMessage: values.message,
+            })
+        }
+    });
+
+
+    const adjustTextareaHeght = () => {
+        const textarea = textareaRef.current;
+
+        if(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${Math.min(textarea.scrollHeight, 267.2)}px`;
+        }
+    }
+    
+
+
 
   return (
     <>
     
-        <form className='fixed bottom-10 w-[90%] lg:w-[60%]'>
+        <form onSubmit={formik.handleSubmit} className='fixed bottom-10 w-[90%] lg:w-[60%]'>
             <div className='relative'>
-                <input 
-                    type="text"
+                <textarea 
+                    value={formik.values.message}
+                    ref={textareaRef}
+                    name='message'
+                    onChange={(e) => {
+                        formik.handleChange(e); 
+                        adjustTextareaHeght();
+                    }}
+                    onBlur={formik.handleBlur}
+                    wrap="soft"
+                    rows='1'
                     placeholder='Message Austronaut'
-                    className='h-24 w-full shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.6rem_rgba(255,255,255,0.25)] lg:dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] bg-gray-100 dark:bg-[#202129] rounded-3xl px-4 placeholder-gray-600 dark:placeholder-gray-50 dark:text-white focus-visible:outline-0 pb-[1.90rem] transition-all' 
+                    className='min-h-24 max-h-[16.7rem] w-full resize-none shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.6rem_rgba(255,255,255,0.25)] lg:dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] bg-gray-100 dark:bg-[#202129] rounded-3xl ps-4 pe-14 placeholder-gray-600 dark:placeholder-gray-50 dark:text-white focus-visible:outline-0 pt-4 transition-all' 
                 />
-                <button className='rounded-full w-9 h-9 flex items-center justify-center absolute right-3 bottom-4 bg-black dark:bg-[#EDEDED] cursor-pointer'>
+                <button 
+                    type='submit'
+                    className='rounded-full w-9 h-9 flex items-center justify-center absolute right-3 bottom-4 bg-black dark:bg-[#EDEDED] cursor-pointer'
+                >
                 
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
