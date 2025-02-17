@@ -5,7 +5,10 @@ const store = configureStore({
     reducer: {
         auth: authSlice.reducer,
         activeChat: activeChatSlice.reducer,
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false
+    }),
 }) ;
 
 export default store

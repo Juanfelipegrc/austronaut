@@ -6,3 +6,4 @@ export * from './auth';
 export * from './UserModal';
 export * from './NewChatButton';
 export * from './ChatsBox';
+export * from './Message';

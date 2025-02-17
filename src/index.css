@@ -16,3 +16,32 @@
     display: flex !important;
     flex-direction: column !important;
 }
+
+.dark .custom-scrollbar::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #1E1F26; 
+    border-radius: 4px; 
+    transition: background 1s ease-in-out
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: theme('color.gray.100'); 
+    border-radius: 4px; 
+    transition: background 1s ease-in-out
+}
+  

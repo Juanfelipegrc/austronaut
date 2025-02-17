@@ -8,7 +8,7 @@ export const ChatInput = () => {
 
 
     const {darkMode} = useAuth();
-    const {onSetActiveChat, title, messages} = useActiveChat();
+    const {onSetActiveChat, createNewChat, title, messages} = useActiveChat();
     const textareaRef = useRef();
 
     const formik = useFormik({
@@ -18,11 +18,12 @@ export const ChatInput = () => {
                     .min(6, 'Message must be at least 1 character'),
         }),
         onSubmit: async(values) => {
-            await onSetActiveChat({
-                title: title,
-                messages: messages,
-                newMessage: values.message,
-            })
+            await createNewChat(values.message);
+            // await onSetActiveChat({
+            //     title: title,
+            //     messages: messages,
+            //     newMessage: values.message,
+            // })
         }
     });
 

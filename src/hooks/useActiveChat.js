@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
-import {addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query} from 'firebase/firestore';
+import {addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, updateDoc} from 'firebase/firestore';
 import { FirebaseDB } from "../firebase/config";
 import { useAuth } from "./useAuth";
 import { createAnswer } from "../helpers";
-import { setActiveChat, setLoadingResponse } from "../store";
+import { setActiveChat, setLoadingResponse, setMessages } from "../store";
+import { useEffect } from "react";
 
 
 export const useActiveChat = () => {
@@ -16,50 +17,53 @@ export const useActiveChat = () => {
 
     const onSetActiveChat = async(chat) => {
 
-        dispatch(setLoadingResponse(true));
+        dispatch(setActiveChat(chat));
 
-        let newChat = null;
-        if(!chat.title && chat.messages?.length === 0){
-            console.log('sellama')
-            const res = await createNewChat(chat.newMessage);
-            newChat = res.chatWithMessages;
-        } else {
-            newChat = {title: chat.title, messages: chat.messages};
-        };
+        localStorage.setItem('activeChat', JSON.stringify(chat));
 
 
+    };
 
-        dispatch(setActiveChat({title: newChat.title, messages: newChat.messages}));
 
-        localStorage.setItem('activeChat', JSON.stringify(newChat));
-
-        dispatch(setLoadingResponse(false));
-
-    } 
+    const onSetMessages = (messages) => {
+        dispatch(setMessages(messages));
+    };
 
 
     const createNewChat = async(message) => {
 
 
-        const {text, title} = await createAnswer(message);
+        const chatID = crypto.randomUUID();
 
-        const chatsRef = collection(FirebaseDB, `users/${uid}/chats`);
+        
+        const chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
 
-        const newChatRef = await addDoc(chatsRef, {
-            title: title,
+        const chat = {
+            title: '',
             createdAt: new Date(),
-        });
+            id: chatID,
+        }
+        
+        await setDoc(chatRef, chat);
 
+        onSetActiveChat(chat);
 
-        const messagesRef = collection(newChatRef, 'messages');
+        
+        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${chatID}/messages`);
 
-
-        await addDoc(messagesRef, {
+        const userMessage = {
             sender: 'user',
             message: message,
             timestamp: new Date(),
-        });
+        }
+        
+        await addDoc(messagesRef, userMessage);
+        
 
+
+        
+        const {text, title} = await createAnswer(message);
+        
 
         if(text) {
             await addDoc(messagesRef, {
@@ -67,34 +71,21 @@ export const useActiveChat = () => {
                 message: text,
                 timestamp: new Date(),
             })
-        };   
+        };
         
-        const chatCreatedSnap = await getDoc(doc(FirebaseDB, `users/${uid}/chats/${newChatRef.id}`));
-
-        const chatCreated = chatCreatedSnap.exists()? {id:chatCreatedSnap.id, ...chatCreatedSnap.data()} : null; 
-
-        const messagesCreatedRef = collection(FirebaseDB, `users/${uid}/chats/${newChatRef.id}/messages`);
-
-        const messagesQuery = query(messagesCreatedRef, orderBy('timestamp', 'asc'));
-
-        const messagesCreatedSnap = await getDocs(messagesQuery);
-
-        const messagesCreated = !messagesCreatedSnap.empty? messagesCreatedSnap.docs.map(doc => ({id: doc.id, ...doc.data()})) : null;
-
-        const chatWithMessages = {...chatCreated, messages: messagesCreated}
-
-        console.log(chatWithMessages)
-        
-        return {
-            chatWithMessages
-        }
+        await updateDoc(chatRef, {
+            title: title,
+        })
 
 
     };
 
+
+
+
     const getMessages = () => {
 
-        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/messages`);
+        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${activeChatState.id}/messages`);
 
         const q = query(messagesRef, orderBy('timestamp', 'asc'))
 
@@ -104,17 +95,30 @@ export const useActiveChat = () => {
                 return {
                     id: doc.id,
                     ...doc.data(),
-                }
+                };
             });
 
-
+            onSetMessages(messages);
 
 
         })
 
         return unsubscribe;
 
-    }
+    };
+
+
+    useEffect(() => {
+
+        if(!uid && !activeChatState.id) return;
+
+        const unsubscribe = getMessages();
+    
+        return () => {
+            unsubscribe();
+        }
+    }, [activeChatState.id])
+    
 
 
     return {

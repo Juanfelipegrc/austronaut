@@ -11,6 +11,7 @@ export const authSlice = createSlice({
         photoURL: '',
         noPhotoURLColor: '',
         error: '',
+        chats: [],
         darkMode: typeof window !== undefined && localStorage.getItem('theme') === 'dark',
     },
     reducers: {

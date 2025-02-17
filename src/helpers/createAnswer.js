@@ -1,4 +1,34 @@
+import { delay } from "framer-motion";
 import { llamaApi } from "../api"
+
+
+const maxRetries = 5;
+const baseDelay = 1000;
+
+
+const fetchWithRetry = async(payload, retries = maxRetries, delay = baseDelay) => {
+
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await llamaApi.post('', payload);
+            return res.data;
+        } catch (error) {
+            if(error.response?.status === 429) {
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            } else {
+                throw error;
+            }
+        }
+    };
+
+    throw new Error('Exceeded max retries. API limit reached');
+};
+
+
+
+
+
 
 
 export const createAnswer = async(message) => {
@@ -27,26 +57,21 @@ export const createAnswer = async(message) => {
 
     try {
         
-        const res = await llamaApi.post('', newMessage);
+       const res = await fetchWithRetry(newMessage);
 
-        const {text} = res?.data.choices[0];
+        const text = res?.choices?.[0]?.text || 'No response received';
 
 
         let title = 'New chat';
 
         if(text){
 
-            const resTitle = await llamaApi.post('', getChatTitle);
+            const resTitle = await fetchWithRetry(getChatTitle);
 
-            const {text} = resTitle?.data.choices[0];
 
-            title = text || 'New chat';
+            title = resTitle?.choices?.[0].text || 'New chat';
 
         }
-
-
-        
-
 
         return {
             text,
