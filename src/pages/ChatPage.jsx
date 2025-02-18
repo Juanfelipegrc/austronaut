@@ -22,17 +22,32 @@ export const ChatPage = () => {
 
             :
 
-              !loadingResponse?
-
               <div className=' w-[82%] lg:w-[70%] h-[75%] flex flex-col gap-11 pe-3 overflow-y-scroll custom-scrollbar'>
-                {messages?.map((message, index) => (
-                  
-                  <Message key={index} message={message}/>
+                {
+                
 
-                ))}
+                
+                messages?.map((message, index) => (
+                  
+                  <React.Fragment key={index}>               
+                    <Message message={message}/>
+                    <h1 
+                      className={`font-semibold animate__animated animate__fadeIn text-[#333333] dark:text-[#EDEDED] text-xl text-start ${loadingResponse.state && message.sender === 'user' && message.id === loadingResponse.idUser? '' : 'hidden'}`}
+                      key={index}
+                    >
+                      Thinking...
+                    </h1>
+                  
+                  </React.Fragment>
+
+                ))
+                
+                
+                
+                }
               </div>
-              :
-              <h1 className='font-semibold text-[#333333] dark:text-white text-8xl text-center'>Thinking</h1>
+              
+              
 
             }
 

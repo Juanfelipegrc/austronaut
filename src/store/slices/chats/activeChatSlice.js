@@ -7,7 +7,11 @@ export const activeChatSlice = createSlice({
         title: '',
         messages: [],
         id: '',
-        loadingResponse: false,
+        loadingResponse: {
+            state: false,
+            idUser: '',
+            idAustronaut: '',
+        },
     },
     reducers: {
         setActiveChat: (state, {payload}) =>{

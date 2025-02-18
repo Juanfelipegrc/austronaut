@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useAuth } from '../hooks';
+import { useActiveChat, useAuth } from '../hooks';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export const Message = ({ message }) => {
   const { darkMode } = useAuth();
+  const {loadingResponse} = useActiveChat();
 
   return (
     <div 
-      className={`${message.sender === 'user' ? 
+      className={`${loadingResponse.state && message.sender === 'austronaut' && message.id === loadingResponse.idAustronaut? 'hidden' : ''} ${message.sender === 'user' ? 
         'self-end bg-gray-100 dark:bg-[#202129] p-5 rounded-xl lg:max-w-[75%] max-w-[80%]' 
         : 'self-start max-w-[100%]'} text-[#333333] dark:text-white transition-all animate__animated animate__fadeIn`}
     >
@@ -39,6 +40,7 @@ export const Message = ({ message }) => {
       >
         {message.message}
       </ReactMarkdown>
+      
     </div>
   );
 };

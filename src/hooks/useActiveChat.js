@@ -49,27 +49,35 @@ export const useActiveChat = () => {
         onSetActiveChat(chat);
 
         
-        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${chatID}/messages`);
+
+        const userMessageID = crypto.randomUUID();
+
+        const userMessageRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}/messages/${userMessageID}`);
 
         const userMessage = {
             sender: 'user',
             message: message,
             timestamp: new Date(),
+            id: userMessageID,
         }
         
-        await addDoc(messagesRef, userMessage);
+        await setDoc(userMessageRef, userMessage);
+
+        const austronautMessageID = crypto.randomUUID();
         
+        const austronautMessageRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}/messages/${austronautMessageID}`);
 
-
+        dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
         
         const {text, title} = await createAnswer(message);
         
 
         if(text) {
-            await addDoc(messagesRef, {
+            await setDoc(austronautMessageRef, {
                 sender: 'austronaut',
                 message: text,
                 timestamp: new Date(),
+                id: austronautMessageID,
             })
         };
         
@@ -77,7 +85,8 @@ export const useActiveChat = () => {
             title: title,
         })
 
-
+        dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
+        
     };
 
 
