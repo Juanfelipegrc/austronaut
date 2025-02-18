@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
-import { chenckingCredentials, login, logout, setDarkMode, setError } from "../store";
+import { chenckingCredentials, login, logout, setChats, setDarkMode, setError } from "../store";
 import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from "../firebase/providers";
-import {doc, getDoc, setDoc} from 'firebase/firestore';
+import {collection, doc, getDoc, onSnapshot, orderBy, query, setDoc} from 'firebase/firestore';
 import { FirebaseDB } from "../firebase/config";
 import { useEffect } from "react";
 import { color } from "framer-motion";
@@ -22,7 +22,7 @@ export const useAuth = () => {
 
     
     
-
+    // REGISTER WITH EMAIL AND PASSWORD
 
     const onRegisterEmailPassword = async(email, password, displayName) => {
 
@@ -55,7 +55,7 @@ export const useAuth = () => {
     }
 
 
-    // ON LOGIN WITH EMAIL PASSWORD
+    // LOGIN WITH EMAIL PASSWORD
 
     const onLoginEmailPassword = async(email, password) => {
         dispatch(chenckingCredentials());
@@ -80,6 +80,7 @@ export const useAuth = () => {
     };
 
 
+    //  SIGN IN WITH GOOGLE
 
     const onSignInWithGoogle = async() => {
         dispatch(chenckingCredentials());
@@ -133,13 +134,42 @@ export const useAuth = () => {
     };
 
 
+    const getChats = () => {
+        const chatsRef = collection(FirebaseDB, `users/${authState.uid}/chats`);
 
-    // ON SET DARK MODE
+        const q = query(chatsRef, orderBy('createdAt', 'desc'));
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+
+            const chats = snapshot.docs.map(doc => {
+                return {
+                    ...doc.data(),
+                };
+            });
+
+            dispatch(setChats(chats));
+
+            const user = {
+                ...authState,
+                chats: chats,
+            };
+
+            localStorage.setItem('user', JSON.stringify(user));
+        });
+
+        return unsubscribe;
+    }
+
+
+
+    // SET DARK MODE
 
     const onSetDarkMode = (toggle) => {
         dispatch(setDarkMode(toggle));
     };
 
+
+    // LOGOUT
 
     const onLogout = () => {
         dispatch(logout());
@@ -154,7 +184,20 @@ export const useAuth = () => {
         if(userLogged) {
           dispatch(login(userLogged));
         }
-      }, [])
+      }, []);
+
+
+      useEffect(() => {
+        
+        if(!authState.uid) return;
+
+        const unsubscribe = getChats();
+      
+        return () => {
+          unsubscribe();
+        }
+      }, [authState.uid])
+      
 
 
     return {

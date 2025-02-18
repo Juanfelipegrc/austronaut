@@ -43,9 +43,13 @@ export const authSlice = createSlice({
 
         setError: (state, {payload}) => {
             state.error = payload;
+        },
+
+        setChats: (state, {payload}) => {
+            state.chats = payload;
         }
     }
 });
 
 
-export const { login, logout, chenckingCredentials, setDarkMode, setError } = authSlice.actions;
+export const { login, logout, chenckingCredentials, setDarkMode, setError, setChats } = authSlice.actions;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { ChatInput, Message } from '../components'
 import { useActiveChat } from '../hooks'
 
@@ -6,7 +6,24 @@ import { useActiveChat } from '../hooks'
 
 export const ChatPage = () => {
 
-  const {messages, loadingResponse} = useActiveChat();
+  const {messages, loadingResponse, id} = useActiveChat();
+
+  const messagesContainerRef = useRef(null);
+
+
+
+  useEffect(() => {
+    
+    if(messagesContainerRef.current) {
+      setTimeout(() => {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }, 800);
+
+    }
+
+  }, [id, messages?.length])
+
+  
 
 
   return (
@@ -22,7 +39,10 @@ export const ChatPage = () => {
 
             :
 
-              <div className=' w-[82%] lg:w-[70%] h-[75%] flex flex-col gap-11 pe-3 overflow-y-scroll custom-scrollbar'>
+              <div 
+                className=' w-[82%] lg:w-[70%] h-[75%] flex flex-col gap-11 pe-3 overflow-y-scroll custom-scrollbar'
+                ref={messagesContainerRef}
+                >
                 {
                 
 

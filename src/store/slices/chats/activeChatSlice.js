@@ -26,9 +26,20 @@ export const activeChatSlice = createSlice({
 
         setMessages: (state, {payload}) => {
             state.messages = payload
-        }
+        },
+
+        clearActiveChat: (state) => {
+            state.title = '';
+            state.messages = [];
+            state.id = '';
+            state.loadingResponse = {
+                state: false,
+                idUser: '',
+                idAustronaut: ''
+            };
+        },
     }
 });
 
 
-export const { setActiveChat, setLoadingResponse, setMessages } = activeChatSlice.actions;
+export const { setActiveChat, setLoadingResponse, setMessages, clearActiveChat } = activeChatSlice.actions;

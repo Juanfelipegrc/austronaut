@@ -1,14 +1,18 @@
 import React from 'react'
-import { useAuth } from '../hooks'
+import { useActiveChat, useAuth } from '../hooks'
 
 export const NewChatButton = () => {
 
     const {darkMode} = useAuth();
+    const {onClearActiveChat} = useActiveChat();
 
   return (
     <>
     
-        <div className='w-full py-2 hover:bg-gray-200 dark:hover:bg-[#181b1f] transition-all duration-300 cursor-pointer'>
+        <div 
+            onClick={onClearActiveChat}
+            className='w-full py-2 hover:bg-gray-200 dark:hover:bg-[#181b1f] transition-all duration-300 cursor-pointer'
+        >
 
             <div className='flex ps-12 lg:ps-7 justify-start items-center'>
                 <svg 
