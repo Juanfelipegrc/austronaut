@@ -17,8 +17,9 @@ export const ChatInput = () => {
             message: Yup.string()
                     .min(6, 'Message must be at least 1 character'),
         }),
-        onSubmit: async(values) => {
+        onSubmit: async(values, {resetForm}) => {
             await createNewChat(values.message);
+            resetForm();
             // await onSetActiveChat({
             //     title: title,
             //     messages: messages,
