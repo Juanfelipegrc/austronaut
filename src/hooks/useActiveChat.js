@@ -118,7 +118,7 @@ export const useActiveChat = () => {
 
         dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
         
-        const {text, title} = await createAnswer(message);
+        const {text} = await createAnswer(message);
         
 
         if(text) {
@@ -130,10 +130,6 @@ export const useActiveChat = () => {
             })
         };
         
-        await updateDoc(chatRef, {
-            title: title,
-        })
-
         dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
 
 
