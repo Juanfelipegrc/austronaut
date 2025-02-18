@@ -1,18 +1,44 @@
-import React from 'react'
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useAuth } from '../hooks';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { materialDark, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-export const Message = ({message}) => {
+export const Message = ({ message }) => {
+  const { darkMode } = useAuth();
+
   return (
-    <>
-    
-    <ReactMarkdown 
-        remarkPlugins={[remarkGfm]} 
-        className={`${message.sender === 'user'? 'self-end bg-gray-100 dark:bg-[#202129] p-5 rounded-xl' : 'self-start'} text-[#333333] dark:text-white lg:max-w-[80%] max-w-[80%] transition-all animate__animated animate__fadeIn`}
+    <div 
+      className={`${message.sender === 'user' ? 
+        'self-end bg-gray-100 dark:bg-[#202129] p-5 rounded-xl lg:max-w-[75%] max-w-[80%]' 
+        : 'self-start max-w-[100%]'} text-[#333333] dark:text-white transition-all animate__animated animate__fadeIn`}
     >
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          code({ node, inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            return !inline && match ? (
+              <SyntaxHighlighter
+                style={darkMode ? materialDark : materialLight}
+                language={match[1]}
+                className='custom-scrollbar'
+                PreTag="div"
+                {...props}
+              >
+                {String(children).replace(/\n$/, '')}
+              </SyntaxHighlighter>
+            ) : (
+              <code className={`${darkMode ? 'bg-[#1e1f26] text-white' : 'bg-gray-200 text-black'} p-1 rounded-md`} {...props}>
+                {children}
+              </code>
+            );
+          }
+        }}
+      >
         {message.message}
-    </ReactMarkdown>
-    
-    </>
-  )
-}
+      </ReactMarkdown>
+    </div>
+  );
+};
