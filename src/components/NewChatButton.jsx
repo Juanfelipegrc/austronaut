@@ -4,13 +4,13 @@ import { useActiveChat, useAuth } from '../hooks'
 export const NewChatButton = () => {
 
     const {darkMode} = useAuth();
-    const {onClearActiveChat} = useActiveChat();
+    const {onCleanActiveChat} = useActiveChat();
 
   return (
     <>
     
         <div 
-            onClick={onClearActiveChat}
+            onClick={onCleanActiveChat}
             className='w-full py-2 hover:bg-gray-200 dark:hover:bg-[#181b1f] transition-all duration-300 cursor-pointer'
         >
 

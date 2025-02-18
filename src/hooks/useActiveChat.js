@@ -3,7 +3,7 @@ import {collection, doc, onSnapshot, orderBy, query, setDoc, updateDoc} from 'fi
 import { FirebaseDB } from "../firebase/config";
 import { useAuth } from "./useAuth";
 import { createAnswer } from "../helpers";
-import { clearActiveChat, setActiveChat, setLoadingResponse, setMessages } from "../store";
+import { cleanActiveChat, setActiveChat, setLoadingResponse, setMessages } from "../store";
 import { useEffect } from "react";
 
 
@@ -15,8 +15,8 @@ export const useActiveChat = () => {
 
 
 
-    const onClearActiveChat = () => {
-        dispatch(clearActiveChat());        
+    const onCleanActiveChat = () => {
+        dispatch(cleanActiveChat());        
     }
 
     const onSetActiveChat = async(chat) => {
@@ -172,6 +172,16 @@ export const useActiveChat = () => {
             unsubscribe();
         }
     }, [activeChatState.id])
+
+
+    useEffect(() => {
+      
+        if(!uid){
+            onCleanActiveChat();
+        }
+        
+    }, [uid])
+    
     
 
 
@@ -179,7 +189,7 @@ export const useActiveChat = () => {
         ...activeChatState,
         createNewChat,
         onSetActiveChat,
-        onClearActiveChat,
+        onCleanActiveChat,
         addMessage,
     }
 }

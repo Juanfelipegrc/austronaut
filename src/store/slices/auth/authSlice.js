@@ -30,6 +30,7 @@ export const authSlice = createSlice({
             state.email = '';
             state.uid = '';
             state.photoURL = '';
+            state.chats = '';
             state.noPhotoURLColor = '';
         },
 

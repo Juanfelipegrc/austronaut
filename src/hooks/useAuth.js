@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
-import { chenckingCredentials, login, logout, setChats, setDarkMode, setError } from "../store";
+import { chenckingCredentials, cleanActiveChat, login, logout, setChats, setDarkMode, setError } from "../store";
 import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from "../firebase/providers";
 import {collection, doc, getDoc, onSnapshot, orderBy, query, setDoc} from 'firebase/firestore';
 import { FirebaseDB } from "../firebase/config";
 import { useEffect } from "react";
-import { color } from "framer-motion";
 
 
 
@@ -24,9 +23,12 @@ export const useAuth = () => {
     
     // REGISTER WITH EMAIL AND PASSWORD
 
-    const onRegisterEmailPassword = async(email, password, displayName) => {
+    const onRegisterEmailPassword = async({email, password, displayName}) => {
+
 
         const res = await registerUserWithEmailPassword(email, displayName, password);
+        
+        const {uid, photoURL} = res;
 
         if(!res.ok) {
             dispatch(setError(res.msg));
@@ -37,16 +39,14 @@ export const useAuth = () => {
             displayName,
             email,
             uid,
-        }
+            photoURL,
+            noPhotoURLColor: darkColorsToPhotoURL[Math.floor(Math.random() * darkColorsToPhotoURL.length)],
+        };
+
+        const userRef = doc(FirebaseDB, 'users', uid);
 
 
-        const userRef = doc(FirebaseDB, 'users', res.uid);
-
-        await setDoc(userRef, {
-            displayName,
-            email,
-            uid
-        });
+        await setDoc(userRef, user);
 
         localStorage.setItem('user', JSON.stringify(user));
 
@@ -57,21 +57,33 @@ export const useAuth = () => {
 
     // LOGIN WITH EMAIL PASSWORD
 
-    const onLoginEmailPassword = async(email, password) => {
+    const onLoginEmailPassword = async({email, password}) => {
         dispatch(chenckingCredentials());
+
+
         const res = await loginWithEmailPassword(email, password);
 
-        const {uid, displayName} = res;
+        const {uid, displayName, photoURL} = res;
+
+
 
         if(!res.ok){
             dispatch(setError(res.msg));
             return;
         };
 
+        const userRef = doc(FirebaseDB, 'users', uid);
+
+        const userSnap = await getDoc(userRef);
+
+        const noPhotoURLColor = userSnap.exists()? userSnap.data().noPhotoURLColor : null;
+
         const user = {
             email,
             displayName,
             uid,
+            photoURL,
+            noPhotoURLColor,
         }
 
         localStorage.setItem('user', JSON.stringify(user));
@@ -132,6 +144,9 @@ export const useAuth = () => {
         dispatch(login(user));
 
     };
+
+
+    // GET CHATS
 
 
     const getChats = () => {
