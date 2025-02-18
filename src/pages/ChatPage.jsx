@@ -13,15 +13,30 @@ export const ChatPage = () => {
 
 
   useEffect(() => {
+
+    if(messages?.length === 0) return;
     
     if(messagesContainerRef.current) {
       setTimeout(() => {
         messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-      }, 800);
+      }, 200);
 
     }
 
-  }, [id, messages?.length])
+  }, [id])
+
+  useEffect(() => {
+
+    if(messages?.length === 0) return;
+    
+    if(messagesContainerRef.current) {
+      setTimeout(() => {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }, 1000);
+
+    }
+
+  }, [messages?.length])
 
   
 
