@@ -17,7 +17,7 @@ export const ChatPage = () => {
     if(messagesContainerRef.current) {
       setTimeout(() => {
         messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-      }, 800);
+      }, 100);
 
     }
 
