@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import {collection, doc, onSnapshot, orderBy, query, setDoc, updateDoc} from 'firebase/firestore';
+import {collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, updateDoc} from 'firebase/firestore';
 import { FirebaseDB } from "../firebase/config";
 import { useAuth } from "./useAuth";
 import { createAnswer } from "../helpers";
@@ -15,9 +15,16 @@ export const useActiveChat = () => {
 
 
 
+    // ON CLEAN ACTIVE CHAT
+
     const onCleanActiveChat = () => {
         dispatch(cleanActiveChat());        
     }
+
+
+
+
+    // ON SET ACTIVE CHAT
 
     const onSetActiveChat = async(chat) => {
 
@@ -27,10 +34,48 @@ export const useActiveChat = () => {
     };
 
 
+
+
+    // ON SET MESSAGES
+
     const onSetMessages = (messages) => {
         dispatch(setMessages(messages));
     };
 
+
+
+    // DELETE CHAT
+
+    const deleteChat = async(chatID) => {
+
+        const chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
+
+        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${chatID}/messages`);
+
+        const chatSnap = await getDoc(chatRef);
+
+        if(!chatSnap.exists()){
+            console.error("chat doesn't exists");
+            return;
+        };
+
+        const messagesSnap = await getDocs(messagesRef);
+        
+        onCleanActiveChat();
+
+        if(!messagesSnap.empty) {
+            const deleteMessages = messagesSnap.docs.map(doc => deleteDoc(doc.ref));
+            await Promise.all(deleteMessages);
+        }
+        
+
+        await deleteDoc(chatRef);
+
+    }
+
+
+
+    // CREATE A NEW CHAT
 
     const createNewChat = async(message) => {
 
@@ -72,6 +117,8 @@ export const useActiveChat = () => {
         dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
         
         const {text, title} = await createAnswer(message);
+
+        onSetActiveChat({...chat, title});
         
 
         if(text) {
@@ -87,15 +134,21 @@ export const useActiveChat = () => {
             title: title,
         })
 
+
         dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
         
     };
 
+
+
+
+
+
+    // ADD A MESSAGE
+
     const addMessage = async(message) => {
 
         const chatID = activeChatState.id;
-
-        const chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
 
 
 
@@ -133,9 +186,13 @@ export const useActiveChat = () => {
         dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
 
 
-    }
+    };
 
 
+
+
+
+    // GET MESSAGES
 
 
     const getMessages = () => {
@@ -160,6 +217,13 @@ export const useActiveChat = () => {
         return unsubscribe;
 
     };
+
+
+
+
+
+
+    // USE EFFECTS
 
 
     useEffect(() => {
@@ -188,6 +252,7 @@ export const useActiveChat = () => {
     return {
         ...activeChatState,
         createNewChat,
+        deleteChat,
         onSetActiveChat,
         onCleanActiveChat,
         addMessage,
