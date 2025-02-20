@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useActiveChat, useAuth } from '../hooks'
+import { useActiveChat, useAuth, useAuthTransition } from '../hooks'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -7,23 +7,29 @@ export const ChatInput = () => {
 
 
 
-    const {darkMode} = useAuth();
+    const {darkMode, status} = useAuth();
     const {createNewChat, addMessage, id, messages} = useActiveChat();
+    const {onSetExpanded} = useAuthTransition();
     const textareaRef = useRef();
 
     const formik = useFormik({
         initialValues: {message: ''},
         validationSchema: Yup.object({
             message: Yup.string()
-                    .min(6, 'Message must be at least 1 character'),
+                    .min(1, 'Message must be at least 1 character'),
         }),
         onSubmit: async(values, {resetForm}) => {
+            if(values?.message?.length === 0) return;
             const savedMessage = values.message
             resetForm();
-            if(messages?.length != 0 && id) {
-                await addMessage(savedMessage);
+            if(status === 'authenticated'){
+                if(messages?.length != 0 && id) {
+                    await addMessage(savedMessage);
+                } else {
+                    await createNewChat(savedMessage);
+                }
             } else {
-                await createNewChat(savedMessage);
+                onSetExpanded();
             }
             
         }

@@ -11,7 +11,7 @@ export const useActiveChat = () => {
 
     const activeChatState = useSelector(state => state.activeChat);
     const dispatch = useDispatch();
-    const {uid, displayName} = useAuth();
+    const {uid} = useAuth();
 
 
 
@@ -48,21 +48,9 @@ export const useActiveChat = () => {
 
     const deleteChat = async(chatID) => {
 
-        let chatRef = null;
+        const chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
 
-        let messagesRef = null;
-
-        if(displayName === 'tempUser'){
-
-            chatRef = doc(FirebaseDB, `tempUsers/${uid}/chats/${chatID}`);
-            messagesRef = collection(FirebaseDB, `tempUsers/${uid}/chats/${chatID}/messages`);
-
-        } else {
-            chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
-            messagesRef = collection(FirebaseDB, `users/${uid}/chats/${chatID}/messages`);
-        }
-
-        
+        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${chatID}/messages`);
 
         const chatSnap = await getDoc(chatRef);
 
@@ -92,145 +80,26 @@ export const useActiveChat = () => {
     const createNewChat = async(message) => {
 
 
-        if(displayName === 'tempUser'){
-
-            const chatID = crypto.randomUUID();
+        const chatID = crypto.randomUUID();
 
         
-            const chatRef = doc(FirebaseDB, `tempUsers/${uid}/chats/${chatID}`);
+        const chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
 
-            const chat = {
-                title: '',
-                createdAt: new Date(),
-                id: chatID,
-            }
-            
-            await setDoc(chatRef, chat);
+        const chat = {
+            title: '',
+            createdAt: new Date(),
+            id: chatID,
+        }
+        
+        await setDoc(chatRef, chat);
 
-            onSetActiveChat(chat);
-
-            
-
-            const userMessageID = crypto.randomUUID();
-
-            const userMessageRef = doc(FirebaseDB, `tempUsers/${uid}/chats/${chatID}/messages/${userMessageID}`);
-
-            const userMessage = {
-                sender: 'user',
-                message: message,
-                timestamp: new Date(),
-                id: userMessageID,
-            }
-            
-            await setDoc(userMessageRef, userMessage);
-
-            const austronautMessageID = crypto.randomUUID();
-            
-            const austronautMessageRef = doc(FirebaseDB, `tempUsers/${uid}/chats/${chatID}/messages/${austronautMessageID}`);
-
-            dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
-            
-            const {text, title} = await createAnswer(message);
-
-            onSetActiveChat({...chat, title});
-            
-
-            if(text) {
-                await setDoc(austronautMessageRef, {
-                    sender: 'austronaut',
-                    message: text,
-                    timestamp: new Date(),
-                    id: austronautMessageID,
-                })
-            };
-            
-            await updateDoc(chatRef, {
-                title: title,
-            })
-
-
-            dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
-
-        } else {
-
-            const chatID = crypto.randomUUID();
-
-            const chatRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}`);
-
-            const chat = {
-                title: '',
-                createdAt: new Date(),
-                id: chatID,
-            }
-            
-            await setDoc(chatRef, chat);
-
-            onSetActiveChat(chat);
-
-            
-
-            const userMessageID = crypto.randomUUID();
-
-            const userMessageRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}/messages/${userMessageID}`);
-
-            const userMessage = {
-                sender: 'user',
-                message: message,
-                timestamp: new Date(),
-                id: userMessageID,
-            }
-            
-            await setDoc(userMessageRef, userMessage);
-
-            const austronautMessageID = crypto.randomUUID();
-            
-            const austronautMessageRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}/messages/${austronautMessageID}`);
-
-            dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
-            
-            const {text, title} = await createAnswer(message);
-
-            onSetActiveChat({...chat, title});
-            
-
-            if(text) {
-                await setDoc(austronautMessageRef, {
-                    sender: 'austronaut',
-                    message: text,
-                    timestamp: new Date(),
-                    id: austronautMessageID,
-                })
-            };
-            
-            await updateDoc(chatRef, {
-                title: title,
-            })
-
-
-            dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
-            }
+        onSetActiveChat(chat);
 
         
-    };
-
-
-
-
-
-
-    // ADD A MESSAGE
-
-    const addMessage = async(message) => {
-
-       if(displayName === 'tempUser') {
-
-        const chatID = activeChatState.id;
-
-
 
         const userMessageID = crypto.randomUUID();
 
-        const userMessageRef = doc(FirebaseDB, `tempUsers/${uid}/chats/${chatID}/messages/${userMessageID}`);
+        const userMessageRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}/messages/${userMessageID}`);
 
         const userMessage = {
             sender: 'user',
@@ -243,11 +112,13 @@ export const useActiveChat = () => {
 
         const austronautMessageID = crypto.randomUUID();
         
-        const austronautMessageRef = doc(FirebaseDB, `tempUsers/${uid}/chats/${chatID}/messages/${austronautMessageID}`);
+        const austronautMessageRef = doc(FirebaseDB, `users/${uid}/chats/${chatID}/messages/${austronautMessageID}`);
 
         dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
         
-        const {text} = await createAnswer(message);
+        const {text, title} = await createAnswer(message);
+
+        onSetActiveChat({...chat, title});
         
 
         if(text) {
@@ -259,10 +130,23 @@ export const useActiveChat = () => {
             })
         };
         
+        await updateDoc(chatRef, {
+            title: title,
+        })
+
+
         dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
         
-       } else {
+    };
 
+
+
+
+
+
+    // ADD A MESSAGE
+
+    const addMessage = async(message) => {
 
         const chatID = activeChatState.id;
 
@@ -300,7 +184,6 @@ export const useActiveChat = () => {
         };
         
         dispatch(setLoadingResponse({idUser: '', state: false, idAustronaut: ''}));
-       }
 
 
     };
@@ -314,13 +197,7 @@ export const useActiveChat = () => {
 
     const getMessages = () => {
 
-        let messagesRef = null;
-
-        if(displayName === 'tempUser') {
-            messagesRef = collection(FirebaseDB, `tempUsers/${uid}/chats/${activeChatState.id}/messages`);
-        } else {
-            messagesRef = collection(FirebaseDB, `users/${uid}/chats/${activeChatState.id}/messages`);
-        }
+        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${activeChatState.id}/messages`);
 
         const q = query(messagesRef, orderBy('timestamp', 'asc'))
 

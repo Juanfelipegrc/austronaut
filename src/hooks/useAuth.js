@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
-import { chenckingCredentials, cleanActiveChat, login, loginWithoutUserLogged, logout, setChats, setDarkMode, setError } from "../store";
+import { chenckingCredentials, cleanActiveChat, login, logout, setChats, setDarkMode, setError } from "../store";
 import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from "../firebase/providers";
-import {collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc} from 'firebase/firestore';
+import {collection, doc, getDoc, onSnapshot, orderBy, query, setDoc} from 'firebase/firestore';
 import { FirebaseDB } from "../firebase/config";
 import { useEffect } from "react";
 
-let globalTempUserValidation = true;
+
 
 export const useAuth = () => {
     
@@ -50,8 +50,6 @@ export const useAuth = () => {
 
         localStorage.setItem('user', JSON.stringify(user));
 
-        await deleteTempUser();
-
         dispatch(login(user));
 
     }
@@ -89,8 +87,6 @@ export const useAuth = () => {
         }
 
         localStorage.setItem('user', JSON.stringify(user));
-
-        await deleteTempUser();
         
         dispatch(login(user));
     };
@@ -145,8 +141,6 @@ export const useAuth = () => {
 
         localStorage.setItem('user', JSON.stringify(user));
 
-        await deleteTempUser();
-
         dispatch(login(user));
 
     };
@@ -156,14 +150,7 @@ export const useAuth = () => {
 
 
     const getChats = () => {
-
-        let chatsRef = null;
-        
-        if(authState.displayName === 'tempUser'){
-            chatsRef = collection(FirebaseDB, `tempUsers/${authState.uid}/chats`);
-        } else {
-            chatsRef = collection(FirebaseDB, `users/${authState.uid}/chats`);
-        }
+        const chatsRef = collection(FirebaseDB, `users/${authState.uid}/chats`);
 
         const q = query(chatsRef, orderBy('createdAt', 'desc'));
 
@@ -182,9 +169,7 @@ export const useAuth = () => {
                 chats: chats,
             };
 
-            if(authState.displayName !== 'tempUser'){
-                localStorage.setItem('user', JSON.stringify(user));
-            }
+            localStorage.setItem('user', JSON.stringify(user));
         });
 
         return unsubscribe;
@@ -203,111 +188,18 @@ export const useAuth = () => {
 
     const onLogout = () => {
         dispatch(logout());
-        localStorage.removeItem('user');
-        createTempUser();
+        localStorage.removeItem('user')
     };
 
 
-
-    // CREATE TEMP USER
-
-    const createTempUser = async() => {
-
-            await deleteTempUser();
-
-            const tempUserID = crypto.randomUUID();
-
-            localStorage.setItem('lastTempUserID', tempUserID);
-
-            
-            const tempUser = {
-                displayName: 'tempUser',
-                email: 'tempUser',
-                uid: tempUserID,
-            };
-
-            const tempUserRef = doc(FirebaseDB, 'tempUsers', tempUserID);
-
-            await setDoc(tempUserRef, tempUser);
-
-            dispatch(loginWithoutUserLogged(tempUser));
-
-            
-          
-    };
-
-
-
-    //  DELETE TEMP USER
-
-    const deleteTempUser = async() => {
-
-        const tempUserID = localStorage.getItem('lastTempUserID') || '';
-
-        if(!tempUserID) return;
-
-        const tempUserRef = doc(FirebaseDB, `tempUsers/${tempUserID}`);
-
-        const tempUserSnap = await getDoc(tempUserRef);
-        
-        if(tempUserSnap.exists()){
-
-            const chatsRef = collection(FirebaseDB, `tempUsers/${tempUserID}/chats`);
-
-            const chatsSnap = await getDocs(chatsRef);
-
-
-            if(!chatsSnap.empty){
-                const deleteMessagesPromises = chatsSnap.docs.map(async(chatDoc) => {
-
-                    const messagesRef = collection(FirebaseDB, `tempUsers/${tempUserID}/chats/${chatDoc.id}/messages`);
-
-                    const messagesSnap = await getDocs(messagesRef);
-
-                    if(!messagesSnap.empty) {
-                        const deleteMessages = messagesSnap.docs.map(doc => deleteDoc(doc.ref));
-                        await Promise.all(deleteMessages);
-                    };
-
-                });
-
-                await Promise.all(deleteMessagesPromises);
-
-                const deleteChats = chatsSnap.docs.map(doc => deleteDoc(doc.ref));
-                await Promise.all(deleteChats);
-            }
-            
-            await deleteDoc(tempUserRef);
-            
-        };
-        
-    };
 
 
     useEffect(() => {
         const userLogged = JSON.parse(localStorage.getItem('user')) || '';
-        if(userLogged && userLogged.displayName !== 'tempUser' && userLogged.uid) {
+        if(userLogged) {
           dispatch(login(userLogged));
-          return;
         }
-
       }, []);
-
-      
-
-      useEffect(() => {
-
-        
-        if(globalTempUserValidation){
-            globalTempUserValidation = false;
-            createTempUser();
-        }
-
-      }, [])
-      
-
-
-      
 
 
       useEffect(() => {
@@ -319,9 +211,7 @@ export const useAuth = () => {
         return () => {
           unsubscribe();
         }
-      }, [authState.uid]);
-
-
+      }, [authState.uid])
       
 
 
@@ -331,9 +221,7 @@ export const useAuth = () => {
         onLoginEmailPassword,
         onRegisterEmailPassword,
         onSignInWithGoogle,
-        onLogout,
-        createTempUser,
-        deleteTempUser,
+        onLogout
     }
 
 }

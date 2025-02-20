@@ -1,74 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {motion} from 'framer-motion';
-import { useAuth } from '../hooks';
+import { useAuth, useAuthTransition } from '../hooks';
 import { Auth } from './auth';
 import { UserModal } from './UserModal';
 
 export const LoginRegisterButton = () => {
 
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [expanded, setExpanded] = useState(false);
-    const [showAuth, setShowAuth] = useState(false);
-    const [showLoginButton, setShowLoginButton] = useState(true);
+   
     const {status, darkMode, displayName, photoURL, noPhotoURLColor} = useAuth();
     const username = `${displayName.split(' ')[0]} ${displayName.split(' ')[1]}`;
-
-    
+    const {expanded, onSetExpanded, onSetModalIsOpen, modalIsOpen, showAuth, showLoginButton, handleModalIsOpen} = useAuthTransition();
       
-
-    const onSetExpanded = () => {
-
-    
-        if(expanded){
-            setShowAuth(false);
-
-            setTimeout(() => {
-                setExpanded(false); 
-              }, 100); 
-            setTimeout(() => {
-                setShowLoginButton(true);
-            }, 300);
-        } else {
-
-            setExpanded(true);
-            setShowLoginButton(false);
-            setTimeout(() => {
-                setShowAuth(true);
-            }, 400);
-            
-        }
-        
-      };
-
-
-      const onSetModalIsOpen = () => {
-        if(modalIsOpen){
-            setModalIsOpen(false);
-        }  
-      }
-
-      useEffect(() => {
-        
-        if(status === 'authenticated') {
-            setShowAuth(false);
-            
-
-            setTimeout(() => {
-                setExpanded(false); 
-              }, 100); 
-            setTimeout(() => {
-                setShowLoginButton(true);
-            }, 300);
-        } 
-
-        if(status === 'not-authenticated') {
-            setModalIsOpen(false);
-        }
-
-      }, [status])
-      
-
-   
    
 
   return (
@@ -84,7 +26,7 @@ export const LoginRegisterButton = () => {
             }
             onClick={() => {
                 if(status === 'authenticated'){
-                    setModalIsOpen(true);
+                    handleModalIsOpen(true);
                 } else if (!expanded) {
                     onSetExpanded();
                 }

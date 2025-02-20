@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {slide as Menu} from 'react-burger-menu'
 import { PrincipalLogoDark, PrincipalLogoLight } from '../assets';
-import { useAuth } from '../hooks';
+import { useAuth, useAuthTransition } from '../hooks';
 import { LoginRegisterButton } from './LoginRegisterButton';
 import { NewChatButton } from './NewChatButton';
 import { ChatsBox } from './ChatsBox';
@@ -11,6 +11,7 @@ export const SideBar = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isOpen, setIsOpen] = useState(false);
   const {darkMode, status} = useAuth();
+  const {expanded} = useAuthTransition();
 
 
   useEffect(() => {
@@ -32,6 +33,15 @@ export const SideBar = () => {
       setIsOpen(false);
     }
   }, [status])
+  
+  useEffect(() => {
+    
+    if(expanded && !isOpen) {
+      setIsOpen(true)
+    }
+
+  }, [expanded]);
+  
   
 
 

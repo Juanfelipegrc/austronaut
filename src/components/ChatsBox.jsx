@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useActiveChat, useAuth } from '../hooks'
 
 export const ChatsBox = () => {
