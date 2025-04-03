@@ -3,7 +3,7 @@ import {collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, orderBy, query,
 import { FirebaseDB } from "../firebase/config";
 import { useAuth } from "./useAuth";
 import { createAnswer } from "../helpers";
-import { cleanActiveChat, setActiveChat, setLoadingResponse, setMessages } from "../store";
+import { cleanActiveChat, setActiveChat, setLoadingResponse, setMemory, setMessages } from "../store";
 import { useEffect } from "react";
 
 
@@ -28,6 +28,7 @@ export const useActiveChat = () => {
 
     const onSetActiveChat = async(chat) => {
 
+        
         dispatch(setActiveChat(chat));
 
 
@@ -89,6 +90,7 @@ export const useActiveChat = () => {
             title: '',
             createdAt: new Date(),
             id: chatID,
+            memory: '',
         }
         
         await setDoc(chatRef, chat);
@@ -116,7 +118,7 @@ export const useActiveChat = () => {
 
         dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
         
-        const {text, title} = await createAnswer(message);
+        const {text, title} = await createAnswer(message, activeChatState.memory);
 
         onSetActiveChat({...chat, title});
         
@@ -171,7 +173,7 @@ export const useActiveChat = () => {
 
         dispatch(setLoadingResponse({idUser: userMessageID, state: true, idAustronaut: austronautMessageID}));
         
-        const {text} = await createAnswer(message);
+        const {text} = await createAnswer(message, activeChatState.memory);
         
 
         if(text) {
@@ -189,6 +191,31 @@ export const useActiveChat = () => {
     };
 
 
+    // UPDATE MEMORY
+
+
+    const updateMemory = async(messages) => {
+        let finalMessage = '';
+        
+        messages.forEach(message => {
+            
+            finalMessage = `${finalMessage} ${message.sender === 'austronaut'? 'IA:' : 'user:'} ${message.message}
+            `;
+        });
+
+        const chatRef = doc(FirebaseDB, `users/${uid}/chats/${activeChatState.id}`);
+
+        const chatSnap = await getDoc(chatRef);
+
+        if(!chatSnap.exists) return;
+
+        const chat = {
+            ...chatSnap.data(),
+            memory: finalMessage,
+        }
+        dispatch(setMemory(finalMessage))
+        await setDoc(chatRef, chat)
+    }
 
 
 
@@ -208,8 +235,33 @@ export const useActiveChat = () => {
                     ...doc.data(),
                 };
             });
+            
 
             onSetMessages(messages);
+            updateMemory(messages)
+
+
+        })
+
+        return unsubscribe;
+
+    };
+
+    const getMemory = () => {
+
+        const messagesRef = collection(FirebaseDB, `users/${uid}/chats/${activeChatState.id}/messages`);
+
+        const q = query(messagesRef, orderBy('timestamp', 'asc'))
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            
+            const messages = snapshot.docs.map(doc => {
+                return {
+                    ...doc.data(),
+                };
+            });
+            
+            updateMemory(messages)
 
 
         })
@@ -236,6 +288,18 @@ export const useActiveChat = () => {
             unsubscribe();
         }
     }, [activeChatState.id])
+
+
+    useEffect(() => {
+
+        if(!uid || !activeChatState.id) return;
+
+        const unsubscribe = getMemory();
+    
+        return () => {
+            unsubscribe();
+        }
+    }, [activeChatState.messages])
 
 
     useEffect(() => {

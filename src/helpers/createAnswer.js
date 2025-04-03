@@ -31,13 +31,13 @@ const fetchWithRetry = async(payload, retries = maxRetries, delay = baseDelay) =
 
 
 
-export const createAnswer = async(message) => {
+export const createAnswer = async(message, memory) => {
 
     const newMessage = {
         model: 'meta-llama/Llama-3.3-70B-Instruct-Turbo-Free',
         messages: [{
             role: 'user',
-            content: message
+            content: `Please read the chat memory to know the chat context and after answer the user petition, you will be able to recognize your messages which are after 'IA:' and the user messages will be after 'user:', remember that you won't return your answers with 'IA:', and remember that your name is Austronaut . MEMORY: ${memory || 'There is not memory yet'} | PETITION: ${message}`
         }],
         temperature: 0.4,
         top_p: 1
@@ -55,7 +55,10 @@ export const createAnswer = async(message) => {
         top_p: 1
     };
 
+    
+
     try {
+
         
        const res = await fetchWithRetry(newMessage);
 

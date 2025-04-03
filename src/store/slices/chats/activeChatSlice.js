@@ -12,12 +12,14 @@ export const activeChatSlice = createSlice({
             idUser: '',
             idAustronaut: '',
         },
+        memory: '',
     },
     reducers: {
         setActiveChat: (state, {payload}) =>{
             state.title = payload.title;
             state.messages = payload.messages;
             state.id = payload.id;
+            state.memory = payload.memory;
         },
 
         setLoadingResponse: (state, {payload}) => {
@@ -25,7 +27,11 @@ export const activeChatSlice = createSlice({
         },
 
         setMessages: (state, {payload}) => {
-            state.messages = payload
+            state.messages = payload;
+        },
+
+        setMemory: (state, {payload}) => {
+            state.memory = payload;
         },
 
         cleanActiveChat: (state) => {
@@ -37,9 +43,10 @@ export const activeChatSlice = createSlice({
                 idUser: '',
                 idAustronaut: ''
             };
+            state.memory = '';
         },
     }
 });
 
 
-export const { setActiveChat, setLoadingResponse, setMessages, cleanActiveChat } = activeChatSlice.actions;
+export const { setActiveChat, setLoadingResponse, setMessages, cleanActiveChat, setMemory } = activeChatSlice.actions;
