@@ -1,13 +1,11 @@
 import React from 'react'
 import { useAuth } from '../hooks'
-import Modal from 'react-modal';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
 
     const {displayName, email, darkMode, onLogout} = useAuth();
 
-    Modal.setAppElement('#root');
 
  
   return (
@@ -15,18 +13,22 @@ export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
         <>
         
            <AnimatePresence>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => onSetModalIsOpen(false)}
-                className='fixed inset-0 flex flex-col justify-center items-center dark:bg-black/25 bg-black/50'
-                overlayClassName='fixed inset-0 bg-black/50 z-[9999]'
+            {
+                modalIsOpen && 
+                <motion.div
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0, transition: {duration: 0.5, delay: 0.4, ease: 'easeInOut'}}}
+                    transition={{duration: 0.3, ease: 'easeInOut'}}
+                    className='fixed inset-0 flex flex-col justify-center z-[9999] items-center dark:bg-black/25 bg-black/50'
                     
                 >
                     
                     <motion.div 
-                    initial={{opacity:0, scale: 0.9, y:-20}}
+                    initial={{opacity:0, scale: 0, y:-20}}
                     animate={{opacity:1, scale: 1, y: 0}}
-                    transition={{duration: 0.3, ease: 'easeInOut'}}
+                    exit={{opacity:0, scale: 0, y:-20, transition: {duration: 0.4, ease: 'easeInOut'}}}
+                    transition={{duration: 0.4, delay: 0.2, ease: 'easeInOut'}}
                     className='relative bg-white dark:bg-[#1E1F26] dark:shadow-[0_0.1rem_0.5rem_rgba(255,255,255,0.25)] w-[80%] h-[40%] lg:w-[32%] shadow rounded-md'
                     >
 
@@ -37,7 +39,7 @@ export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
                         width="1.2rem" 
                         fill={darkMode? '#fff' :"#333333"}
                         className='absolute top-4 left-4 cursor-pointer z-50'
-                        onClick={() => onSetModalIsOpen()}
+                        onClick={onSetModalIsOpen}
                         >
                             <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/>
                         </svg>
@@ -128,7 +130,8 @@ export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
 
                     </motion.div>
 
-                </Modal>
+                </motion.div>
+            }
            </AnimatePresence>
 
         </>
