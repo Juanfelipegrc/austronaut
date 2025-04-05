@@ -4,7 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
 
-    const {displayName, email, darkMode, onLogout} = useAuth();
+    const {displayName, email, status, darkMode, onLogout} = useAuth();
+
+
 
 
  
@@ -18,8 +20,8 @@ export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
                 <motion.div
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
-                    exit={{opacity: 0, transition: {duration: 0.5, delay: 0.4, ease: 'easeInOut'}}}
-                    transition={{duration: 0.3, ease: 'easeInOut'}}
+                    exit={{opacity: 0, transition: status === 'authenticated'?{duration: 0.5, delay: 0.4, ease: 'easeInOut'} : {duration: 0}}}
+                    transition={ status === 'authenticated'?{duration: 0.3, ease: 'easeInOut'} : {duration: 0}}
                     className='fixed inset-0 flex flex-col justify-center z-[9999] items-center dark:bg-black/25 bg-black/50'
                     
                 >
@@ -27,8 +29,8 @@ export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
                     <motion.div 
                     initial={{opacity:0, scale: 0, y:-20}}
                     animate={{opacity:1, scale: 1, y: 0}}
-                    exit={{opacity:0, scale: 0, y:-20, transition: {duration: 0.4, ease: 'easeInOut'}}}
-                    transition={{duration: 0.4, delay: 0.2, ease: 'easeInOut'}}
+                    exit={{opacity:0, scale: 0, y:-20, transition: status === 'authenticated'? {duration: 0.4, ease: 'easeInOut'} : {duration: 0}}}
+                    transition={ status === 'authenticated'? {duration: 0.4, delay: 0.2, ease: 'easeInOut'} : {duration: 0}}
                     className='relative bg-white dark:bg-[#1E1F26] dark:shadow-[0_0.1rem_0.5rem_rgba(255,255,255,0.25)] w-[80%] h-[40%] sm:w-[60%] md:w-[50%] lg:w-[33%] shadow rounded-md'
                     >
 
