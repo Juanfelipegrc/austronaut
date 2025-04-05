@@ -29,20 +29,21 @@ export const UserModal = ({modalIsOpen, onSetModalIsOpen}) => {
                     animate={{opacity:1, scale: 1, y: 0}}
                     exit={{opacity:0, scale: 0, y:-20, transition: {duration: 0.4, ease: 'easeInOut'}}}
                     transition={{duration: 0.4, delay: 0.2, ease: 'easeInOut'}}
-                    className='relative bg-white dark:bg-[#1E1F26] dark:shadow-[0_0.1rem_0.5rem_rgba(255,255,255,0.25)] w-[80%] h-[40%] lg:w-[32%] shadow rounded-md'
+                    className='relative bg-white dark:bg-[#1E1F26] dark:shadow-[0_0.1rem_0.5rem_rgba(255,255,255,0.25)] w-[80%] h-[40%] sm:w-[60%] md:w-[50%] lg:w-[33%] shadow rounded-md'
                     >
 
-                        <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        height="1.2rem" 
-                        viewBox="0 -960 960 960" 
-                        width="1.2rem" 
-                        fill={darkMode? '#fff' :"#333333"}
-                        className='absolute top-4 left-4 cursor-pointer z-50'
-                        onClick={onSetModalIsOpen}
-                        >
-                            <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/>
-                        </svg>
+                        <div className='absolute top-3 left-4 cursor-pointer z-50 p-2 flex justify-center items-center'>
+                            <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            height="1.2rem" 
+                            viewBox="0 -960 960 960" 
+                            width="1.2rem" 
+                            fill={darkMode? '#fff' :"#333333"}
+                            onClick={onSetModalIsOpen}
+                            >
+                                <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/>
+                            </svg>
+                        </div>
                             <div className='absolute w-full flex justify-center top-4'>
                                 <h1 className='font-orbitron font-medium text-black dark:text-white text-[1rem] text-center'>USER INFO</h1>
                             </div>
