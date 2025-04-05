@@ -1,59 +1,58 @@
 # Austronaut
 
-**Austronaut** es una aplicación de inteligencia artificial diseñada como una alternativa a ChatGPT, enfocada en ofrecer una experiencia de chat conversacional sin los modos de búsqueda o pensamiento adicionales. Construida con React y potenciada por Firebase para la autenticación y almacenamiento, Austronaut proporciona una interfaz moderna y animada para interactuar con una IA, ideal para usuarios que buscan simplicidad y funcionalidad directa.
+**Austronaut** is an artificial intelligence application designed as an alternative to ChatGPT, focused on offering a conversational chat experience without additional browsing or thought modes. Built with React and powered by Firebase for authentication and storage, Austronaut provides a modern and animated interface for interacting with an AI—perfect for users seeking simplicity and direct functionality.
 
-## Características
+## Features
 
-- **Chat conversacional:** Interactúa con una IA sin complicaciones, diseñada para respuestas rápidas y directas.
-- **Autenticación con Firebase:** Inicia sesión con Google o correo electrónico para guardar tus chats.
-- **Interfaz animada:** Usa `framer-motion` para transiciones suaves y una experiencia visual atractiva.
-- **Estado global con Redux:** Manejo robusto del estado con `@reduxjs/toolkit` y `react-redux`.
-- **Soporte para Markdown:** Renderiza respuestas en formato Markdown con `react-markdown` y soporte para tablas con `remark-gfm`.
-- **Validación de formularios:** Formularios seguros y fáciles de usar con `formik` y `yup`.
-- **Diseño responsivo:** Estilizado con Tailwind CSS para adaptarse a diferentes dispositivos.
+- **Conversational chat:** Interact with an AI without complications, designed for fast and direct responses.
+- **Firebase authentication:** Log in with Google or email to save your chats.
+- **Animated interface:** Uses `framer-motion` for smooth transitions and an engaging visual experience.
+- **Global state with Redux:** Robust state management with `@reduxjs/toolkit` and `react-redux`.
+- **Markdown support:** Renders responses in Markdown format using `react-markdown` with table support via `remark-gfm`.
+- **Form validation:** Secure and user-friendly forms with `formik` and `yup`.
+- **Responsive design:** Styled with Tailwind CSS to adapt to various devices.
 
-## Tecnologías
+## Technologies
 
-Austronaut está construido con las siguientes dependencias:
+Austronaut is built with the following dependencies:
 
-### Dependencias principales
+### Main Dependencies
 
-- **React** (`^19.0.0`): Biblioteca principal para la interfaz de usuario.
-- **React DOM** (`^19.0.0`): Renderizado en el DOM.
-- **Redux Toolkit** (`^2.5.1`) y **React Redux** (`^9.2.0`): Gestión del estado global.
-- **Firebase** (`^11.3.1`): Autenticación y base de datos en tiempo real.
-- **Framer Motion** (`^12.4.2`): Animaciones fluidas.
-- **Tailwind CSS** (`^4.0.6`): Estilos utilitarios.
-- **Axios** (`^1.7.9`): Solicitudes HTTP (si se integra con una API externa).
-- **Formik** (`^2.4.6`) y **Yup** (`^1.6.1`): Gestión y validación de formularios.
-- **React Router DOM** (`^7.1.5`): Navegación entre rutas.
-- **React Markdown** (`^9.0.3`) y **Remark GFM** (`^4.0.1`): Renderizado de Markdown.
-- **React Modal** (`^3.16.3`): Modales personalizados.
-- **React Burger Menu** (`^3.1.0`): Menú lateral responsivo.
-- **React Syntax Highlighter** (`^15.6.1`): Resaltado de código en respuestas.
-- **Animate.css** (`^4.1.1`): Animaciones CSS predefinidas.
+- **React** (`^19.0.0`): Main library for building the user interface.
+- **React DOM** (`^19.0.0`): DOM rendering for React.
+- **Redux Toolkit** (`^2.5.1`) and **React Redux** (`^9.2.0`): Global state management.
+- **Firebase** (`^11.3.1`): Authentication and real-time database.
+- **Framer Motion** (`^12.4.2`): Smooth animations.
+- **Tailwind CSS** (`^4.0.6`): Utility-first CSS framework.
+- **Axios** (`^1.7.9`): HTTP requests (if integrated with an external API).
+- **Formik** (`^2.4.6`) and **Yup** (`^1.6.1`): Form handling and validation.
+- **React Router DOM** (`^7.1.5`): Routing and navigation.
+- **React Markdown** (`^9.0.3`) and **Remark GFM** (`^4.0.1`): Markdown rendering with GFM support.
+- **React Burger Menu** (`^3.1.0`): Responsive sidebar menu.
+- **React Syntax Highlighter** (`^15.6.1`): Syntax highlighting for code in responses.
+- **Animate.css** (`^4.1.1`): Predefined CSS animations.
 
-### Dependencias de desarrollo
+### Development Dependencies
 
-- **Vite** (`^6.1.0`): Herramienta de construcción rápida.
-- **@vitejs/plugin-react** (`^4.3.4`): Plugin para React en Vite.
-- **ESLint** (`^9.19.0`) y plugins relacionados: Linting para mantener la calidad del código.
-- **@types/react** (`^19.0.8`) y **@types/react-dom** (`^19.0.3`): Tipos para TypeScript.
+- **Vite** (`^6.1.0`): Fast build tool.
+- **@vitejs/plugin-react** (`^4.3.4`): Plugin to use React with Vite.
+- **ESLint** (`^9.19.0`) and related plugins: Code linting to maintain code quality.
+- **@types/react** (`^19.0.8`) and **@types/react-dom** (`^19.0.3`): TypeScript definitions for React.
 
-## Instalación
+## Installation
 
-Sigue estos pasos para configurar y ejecutar Austronaut en tu máquina local.
+Follow these steps to set up and run Austronaut on your local machine.
 
-### Prerrequisitos
+### Prerequisites
 
-- **Node.js** (versión 18 o superior recomendada).
-- **Yarn** (instálalo con `npm install -g yarn` si no lo tienes).
-- Una cuenta de Firebase para la autenticación y base de datos (opcional si deseas usar las funcionalidades completas).
+- **Node.js** (version 18 or higher recommended)
+- **Yarn** (install it with `npm install -g yarn` if not already installed)
+- A Firebase account for authentication and database (optional if you want full functionality)
 
-### Pasos
+### Steps
 
-1. **Clona el repositorio:**
+1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/tu-usuario/austronaut.git
+   git clone https://github.com/your-username/austronaut.git
    cd austronaut
