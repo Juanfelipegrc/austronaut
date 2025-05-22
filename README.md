@@ -1,58 +1,60 @@
 # Austronaut
 
-**Austronaut** is an artificial intelligence application designed as an alternative to ChatGPT, focused on offering a conversational chat experience without additional browsing or thought modes. Built with React and powered by Firebase for authentication and storage, Austronaut provides a modern and animated interface for interacting with an AI—perfect for users seeking simplicity and direct functionality.
+**Austronaut** is an artificial intelligence chat application inspired by ChatGPT, focused on delivering a clean and dynamic conversation experience. Built with React, styled using Tailwind CSS, and powered by Firebase, it provides authentication, state persistence, and markdown-rendered responses using Prism-based syntax highlighting.
 
 ## Features
 
-- **Conversational chat:** Interact with an AI without complications, designed for fast and direct responses.
-- **Firebase authentication:** Log in with Google or email to save your chats.
-- **Animated interface:** Uses `framer-motion` for smooth transitions and an engaging visual experience.
-- **Global state with Redux:** Robust state management with `@reduxjs/toolkit` and `react-redux`.
-- **Markdown support:** Renders responses in Markdown format using `react-markdown` with table support via `remark-gfm`.
-- **Form validation:** Secure and user-friendly forms with `formik` and `yup`.
-- **Responsive design:** Styled with Tailwind CSS to adapt to various devices.
+- Conversational AI: Simple and responsive chat interface powered by AI.
+- Firebase Authentication: Secure login using Google or email.
+- Live Markdown Rendering: Responses are formatted using `@uiw/react-markdown-preview` with Prism.js highlighting.
+- Animated UI: Smooth transitions and motion using `framer-motion` and `animate.css`.
+- Redux Global State: App-wide state management using `@reduxjs/toolkit` and `react-redux`.
+- Responsive UI: Styled with Tailwind CSS and built mobile-first.
+- Form Handling: Easy and validated form flows using `formik` and `yup`.
+- Sidebar Navigation: Responsive burger menu for mobile/desktop.
 
 ## Technologies
 
-Austronaut is built with the following dependencies:
-
 ### Main Dependencies
 
-- **React** (`^19.0.0`): Main library for building the user interface.
-- **React DOM** (`^19.0.0`): DOM rendering for React.
-- **Redux Toolkit** (`^2.5.1`) and **React Redux** (`^9.2.0`): Global state management.
-- **Firebase** (`^11.3.1`): Authentication and real-time database.
-- **Framer Motion** (`^12.4.2`): Smooth animations.
-- **Tailwind CSS** (`^4.0.6`): Utility-first CSS framework.
-- **Axios** (`^1.7.9`): HTTP requests (if integrated with an external API).
-- **Formik** (`^2.4.6`) and **Yup** (`^1.6.1`): Form handling and validation.
-- **React Router DOM** (`^7.1.5`): Routing and navigation.
-- **React Markdown** (`^9.0.3`) and **Remark GFM** (`^4.0.1`): Markdown rendering with GFM support.
-- **React Burger Menu** (`^3.1.0`): Responsive sidebar menu.
-- **React Syntax Highlighter** (`^15.6.1`): Syntax highlighting for code in responses.
-- **Animate.css** (`^4.1.1`): Predefined CSS animations.
+- React (`^19.0.0`)
+- React DOM (`^19.0.0`)
+- @reduxjs/toolkit (`^2.5.1`)
+- React Redux (`^9.2.0`)
+- Firebase (`^11.3.1`)
+- Framer Motion (`^12.4.2`)
+- Tailwind CSS (`^4.0.6`)
+- @uiw/react-markdown-preview (`^5.1.4`) – for Markdown rendering with Prism.js highlighting
+- Formik (`^2.4.6`)
+- Yup (`^1.6.1`)
+- Axios (`^1.7.9`)
+- React Router DOM (`^7.1.5`)
+- React Burger Menu (`^3.1.0`)
+- Animate.css (`^4.1.1`)
 
 ### Development Dependencies
 
-- **Vite** (`^6.1.0`): Fast build tool.
-- **@vitejs/plugin-react** (`^4.3.4`): Plugin to use React with Vite.
-- **ESLint** (`^9.19.0`) and related plugins: Code linting to maintain code quality.
-- **@types/react** (`^19.0.8`) and **@types/react-dom** (`^19.0.3`): TypeScript definitions for React.
+- Vite (`^6.1.0`)
+- @vitejs/plugin-react (`^4.3.4`)
+- ESLint (`^9.19.0`)
+- @eslint/js (`^9.19.0`)
+- eslint-plugin-react, react-hooks, react-refresh
+- @types/react (`^19.0.8`)
+- @types/react-dom (`^19.0.3`)
+- Globals (`^15.14.0`)
 
 ## Installation
 
-Follow these steps to set up and run Austronaut on your local machine.
-
 ### Prerequisites
 
-- **Node.js** (version 18 or higher recommended)
-- **Yarn** (install it with `npm install -g yarn` if not already installed)
-- A Firebase account for authentication and database (optional if you want full functionality)
+- Node.js (v18+ recommended)
+- Yarn (Install: `npm install -g yarn`)
+- Optional: A Firebase project if you want full auth/database integration
 
 ### Steps
 
-1. **Clone the repository:**
+1. Clone the repository
 
    ```bash
-   git clone https://github.com/your-username/austronaut.git
+   git clone https://github.com/juanfelipegrc/austronaut.git
    cd austronaut

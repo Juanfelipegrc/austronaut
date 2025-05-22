@@ -45,4 +45,80 @@
     transition: background 1s ease-in-out
 }
 
+.markdown-preview pre {
+  @apply bg-gray-100 text-black p-4 rounded-md; 
+}
+
+.dark .markdown-preview pre {
+  @apply bg-[#1e1f26] text-white p-4 rounded-md; 
+}
+
+
+
+.dark .markdown-preview .token.comment {
+  color: #9ca3af;  
+  font-style: italic;
+}
+
+.dark .markdown-preview .token.attr-value,
+.dark .markdown-preview .token.property-access {
+  color: #ffc71d;  
+  font-style: italic;
+}
+
+.dark .markdown-preview .token.attr-name,
+.dark .markdown-preview .token.literal-property.property {
+  color: #ff553e;  
+  font-style: italic;
+}
+
+
+.dark .markdown-preview .token.keyword {
+  color: #ff7edb;  
+  font-weight: bold;
+}
+
+
+.dark .markdown-preview .token.string {
+  color: #7dd3fc;  
+}
+
+
+.dark .markdown-preview .token.function {
+  color: #86efac;  
+}
+
+
+.dark .markdown-preview .token.operator {
+  color: #facc15;  
+}
+
+
+.dark .markdown-preview .token.number {
+  color: #f472b6;  
+}
+
+
+.dark .markdown-preview .token.boolean {
+  color: #fb923c;  
+}
+
+
+.dark .markdown-preview .token.module {
+  color: #a78bfa;  
+}
+
+
+.dark .markdown-preview .token.class-name,
+.dark .markdown-preview .token.maybe-class-name {
+  color: #60a5fa;  
+  font-weight: bold;
+}
+
+
+.dark .markdown-preview .token.tag {
+  color: #34d399;  
+}
+
+
   

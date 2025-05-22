@@ -73,16 +73,19 @@ export const SideBar = () => {
               onStateChange={({isOpen}) => setIsOpen(isOpen)}
             >
 
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                height="1.2rem" viewBox="0 -960 960 960" 
-                width="1.2rem" 
-                fill={darkMode? '#F4F6F8' : '#1E1F26'}
-                className='absolute right-4 top-6'
+              <div 
+                className='absolute right-4 top-6 p-1 cursor-pointer'
                 onClick={() => setIsOpen(false)}
-                >
-                  <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
-              </svg>
+              >
+                  <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  height="1.2rem" viewBox="0 -960 960 960" 
+                  width="1.2rem" 
+                  fill={darkMode? '#F4F6F8' : '#1E1F26'}
+                  >
+                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
+                </svg>
+              </div>
 
               <div className='w-full h-full flex flex-col items-center'>
               {/* HEADER */}

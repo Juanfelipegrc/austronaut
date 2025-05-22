@@ -65,7 +65,7 @@ export const ChatInput = () => {
                     wrap="soft"
                     rows='1'
                     placeholder='Message Austronaut'
-                    className='min-h-24 max-h-[16.7rem] w-full resize-none shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.6rem_rgba(255,255,255,0.25)] lg:dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] bg-gray-100 dark:bg-[#202129] rounded-3xl ps-4 pe-14 placeholder-gray-600 dark:placeholder-gray-50 dark:text-white focus-visible:outline-0 pt-4 transition-all' 
+                    className='custom-scrollbar min-h-24 max-h-[16.7rem] w-full resize-none shadow-[0_0.1rem_0.6rem_rgba(0,0,0,0.25)] dark:shadow-[0_0.1rem_0.6rem_rgba(255,255,255,0.25)] lg:dark:shadow-[0_0.1rem_0.8rem_rgba(255,255,255,0.25)] bg-gray-100 dark:bg-[#202129] rounded-3xl ps-4 pe-14 placeholder-gray-600 dark:placeholder-gray-50 dark:text-white focus-visible:outline-0 pt-4 transition-all' 
                 />
                 <button 
                     type='submit'
