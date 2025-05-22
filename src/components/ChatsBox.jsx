@@ -1,10 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useActiveChat, useAuth } from '../hooks'
 
-export const ChatsBox = () => {
+export const ChatsBox = ({onCloseSideBar = () => {}}) => {
 
   const {chats, darkMode} = useAuth();
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const {onSetActiveChat, id, title, deleteChat} = useActiveChat();
+
+
+  useEffect(() => {
+      
+      const handleScreenWidth = () => {
+        setScreenWidth(window.innerWidth)
+      };
+  
+      window.addEventListener('resize', handleScreenWidth);
+    
+      return () => {
+        window.removeEventListener('resize', handleScreenWidth);
+      }
+    }, [window.innerWidth])
 
 
 
@@ -25,10 +40,15 @@ export const ChatsBox = () => {
               {chats?.map((chat, index) => (
                 <div 
                   key={index} 
-                  onClick={() => chat.id === id? {} : onSetActiveChat(chat)}
+                  onClick={() => {
+                    if(chat.id !== id){
+                      onSetActiveChat(chat);
+                      onCloseSideBar();
+                    }
+                  }}
                   className={`w-[80%] relative flex ps-5 ms-8 lg:ms-0 items-center animate__animated animate__fadeIn p-2 rounded-xl transition-all cursor-pointer ${chat.id === id? 'bg-gray-200 dark:bg-[#121417] justify-between' : 'hover:bg-gray-200 dark:hover:bg-[#121417] justify-start'}`}
                 >
-                  <p className=' text-[0.85rem] dark:text-[#EDEDED] text-[#333333]'>{chat.title?.length > 20? `${chat.title.substring(0, 20)}...` : chat.title}</p>
+                  <p className=' text-[0.85rem] dark:text-[#EDEDED] text-[#333333]'>{screenWidth < 1024 ? chat.title?.length > 21? `${chat.title.substring(0, 21)}...` : chat.title : chat.title?.length > 17? `${chat.title.substring(0, 17)}...` : chat.title}</p>
 
                   
 
@@ -40,7 +60,8 @@ export const ChatsBox = () => {
                     fill={darkMode? '#EDEDED' : '#333333'}
                     onClick={(e) => {
                       e.stopPropagation();
-                      deleteChat(chat.id)
+                      deleteChat(chat.id);
+                      onCloseSideBar();
                       
                     }}
                     className={`${chat.id === id? title?.length > 0? '' : 'hidden' : 'hidden'}`}>

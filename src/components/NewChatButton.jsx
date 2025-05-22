@@ -1,16 +1,21 @@
 import React from 'react'
 import { useActiveChat, useAuth } from '../hooks'
 
-export const NewChatButton = () => {
+export const NewChatButton = ({onCloseSideBar = () => {}}) => {
 
     const {darkMode} = useAuth();
     const {onCleanActiveChat} = useActiveChat();
+
+    
 
   return (
     <>
     
         <div 
-            onClick={onCleanActiveChat}
+            onClick={() => {
+                onCleanActiveChat();
+                onCloseSideBar();
+            }}
             className='w-full py-2 hover:bg-gray-200 dark:hover:bg-[#181b1f] transition-all duration-300 cursor-pointer'
         >
 

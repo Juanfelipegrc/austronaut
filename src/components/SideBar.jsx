@@ -14,6 +14,10 @@ export const SideBar = () => {
   const {expanded} = useAuthTransition();
 
 
+  const onCloseSideBar = () => {
+    setIsOpen(false);
+  }
+
   useEffect(() => {
     
     const handleScreenWidth = () => {
@@ -94,9 +98,9 @@ export const SideBar = () => {
                 <h1 className='text-center mb-7 text-[1.2rem] mt-5 font-orbitron font-bold text-[#333333] dark:text-[#EDEDED]'>AUSTRONAUT</h1>
               {/* HEADER */}
 
-                <NewChatButton/>
+                <NewChatButton onCloseSideBar={() => onCloseSideBar()}/>
 
-                <ChatsBox/>
+                <ChatsBox onCloseSideBar={() => onCloseSideBar()}/>
 
 
                 <LoginRegisterButton/>
