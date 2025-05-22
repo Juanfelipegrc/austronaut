@@ -18,8 +18,11 @@ export const ChatPage = () => {
     
     if(messagesContainerRef.current) {
       setTimeout(() => {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-      }, 200);
+        messagesContainerRef.current.scrollTo({
+          top: messagesContainerRef.current.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 300);
 
     }
 
@@ -31,7 +34,10 @@ export const ChatPage = () => {
     
     if(messagesContainerRef.current) {
       setTimeout(() => {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+       messagesContainerRef.current.scrollTo({
+          top: messagesContainerRef.current.scrollHeight,
+          behavior: 'smooth'
+        });
       }, 1000);
 
     }
