@@ -37,7 +37,7 @@ export const createAnswer = async(message, memory) => {
         model: 'meta-llama/Llama-3.3-70B-Instruct-Turbo-Free',
         messages: [{
             role: 'user',
-            content: `Please read the chat memory to know the chat context and after answer the user petition, you will be able to recognize your messages which are after 'IA:' and the user messages will be after 'user:', remember that you won't return your answers with 'IA:', remember that your name is Austronaut and you must write all in markdown format. MEMORY: ${memory || 'There is not memory yet'} | PETITION: ${message}`
+            content: `Please read the chat memory to know the chat context and after answer the user petition, you will be able to recognize your messages which are after 'IA:' and the user messages will be after 'user:', remember that you won't return your answers with 'IA:', your name is Austronaut in case they ask you or you want to say it. You must write all in markdown format. MEMORY: ${memory || 'There is not memory yet'} | PETITION: ${message}`
         }],
         temperature: 0.4,
         top_p: 1
